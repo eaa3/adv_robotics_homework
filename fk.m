@@ -28,6 +28,17 @@ function [T,J] = fk(DH,q)
         alpha = DH(i,2);
         d = DH(i,3);
         theta = DH(i,4);
+        joint_type = DH(i,5);
+        
+        %if the joint is revolute, then only the d is constant, so theta
+        %assume the value of the current joint configuration q(i).
+        %Otherwise, only theta is constant and define by DH params, so d
+        %assumes the value q(i) instead.
+        if joint_type == 0,
+            theta = q(i);
+        else
+            d = q(i);
+        end
          
         Aalpha = transl(a,0,0)*trotx(alpha);
         Atheta = transl(0,0,d)*trotz(theta); 
