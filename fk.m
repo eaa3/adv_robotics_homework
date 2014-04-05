@@ -21,7 +21,7 @@ function [T,J] = fk(DH,q)
     J = zeros(6,s_dh(1));
     T = eye(4,4);
     
-        
+
     for i=(1:N),
         
         a = DH(i,1);
