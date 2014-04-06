@@ -3,7 +3,7 @@ function ik_test(p_dest,DH, q, q_dest, Mq);
 if nargin < 2
     DH = [1 0 0 pi/12 0; 1 0 0 pi/6 0; 1 0 0 pi/3 0; 1 0 0 pi/12 0; 1 0 0 pi/3 0; 1 0 0 pi/12 0; 1 0 0 pi/3 0; 1 0 0 pi/6 0; 1 0 0 pi/12 0; 1 0 0 pi/3 0; 1 0 0 pi/6 0; 1 0 0 pi/12 0; 1 0 0 0 0; 1 0 0 pi/6 0; 1 0 0 pi/3 0; ; 1 0 0 0 0; ; 1 0 0 0 0; 1 0 0 0 0; 1 0 0 0 0; 1 0 0 0 0];
     q = [pi/12 pi/6 pi/3 zeros(1,17)]';
-    q_dest = [pi/4; zeros(17,1); pi/6; 0];
+    q_dest = [0; zeros(17,1); 0; 0];
     Mq = 1;
     
     if nargin < 1

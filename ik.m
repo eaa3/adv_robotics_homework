@@ -59,7 +59,7 @@ while(~finish),
     
     P = (IdenP -Jc*J);
 
-    dq = Jc*K*e + P*(q_des*Mq);
+    dq = Jc*K*e + P*((q-q_des)*Mq);
     
     
     q_tmp = q_tmp + dq*deltaTime;
