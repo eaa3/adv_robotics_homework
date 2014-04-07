@@ -2,21 +2,25 @@ function q_new = ik(DH,q,p_des,q_des,Mq)
 
 
 finish = 0;
+Nit = 1000;
+Error_threshold = 0.5;
 
 % Dimensions of DH table of parameters
 size_dh = size(DH);
 
 % Damping factor
-k = 0.5;
+k = 0.3;
 
 % Integration time
-deltaTime = 0.1;
+deltaTime = 0.05;
 
-% Matrix Gain
+% Matrix Gain (arbitrarily defined as the identity)
 K = eye(6,6);
 
 
 e = [];
+q_e = [];
+best_q_e = inf;
 IdenP = eye(size_dh(1),size_dh(1));
 
 
@@ -24,18 +28,9 @@ q_new = [q'];
 q_tmp = q;
 count = 1;
 
-
-r = constructRobot(DH);
-test = 0;
 while(~finish),
     
     [T,J] = fk(DH,q_tmp);
-    
-    %% Just a test to compare my fk function with the builtin fkine
-    T2 = fkine(r,q_tmp);
-    if( T2 ~= T ),
-        test = test + 1;
-    end
     
     
     %% Limiting the robot to the plane (This way we avoid singularity)
@@ -50,6 +45,9 @@ while(~finish),
     Jc = J'/(J*J' + (k^2)*IdenJ);
     
     p_e = T*[0 0 0 1]';
+    
+    %For the planar case, the angular position of the end effector is just
+    %the sum of the joint angles
     theta = sum(q_tmp);
     
     %% Limiting the robot to the place
@@ -57,21 +55,28 @@ while(~finish),
     
     e = p_des - p_e;
     
-    P = (IdenP -Jc*J);
-
-    dq = Jc*K*e + P*((q-q_des)*Mq);
+    P = (IdenP - Jc*J);
     
+    
+    % just saving the best q_des (for testing purposes)
+    q_e = (q_des-q);
+    if norm(q_e) <= best_q_e
+        best_q_e = norm(q_e);
+    end
+    
+    dq = Jc*K*e + P*(q_e*0.5*Mq);    
     
     q_tmp = q_tmp + dq*deltaTime;
+    
     q_new = [ q_new ; q_tmp'];
     
     count = count + 1;
     
-    %% Terminating condition is reach
-    finish = norm(e) <= 1 || count >= 1000;    
+    %% Terminating condition is reached 
+    finish = norm(e) <= Error_threshold || count > Nit;  
 end
 
-display(sprintf('FK Error Count = %g Iterations Count: %d Final Error: %g',test,count,norm(e)));
+display(sprintf('Q_e Error = %g Iterations Count: %d Final Error: %g',norm(q_e),count,norm(e)));
 
 
 

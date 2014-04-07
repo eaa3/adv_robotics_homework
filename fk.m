@@ -19,6 +19,9 @@ function [T,J] = fk(DH,q)
     Z = {};
     
     J = zeros(6,s_dh(1));
+    
+    %Tb_0 (The transformation from frame 0 to the base frame b is set to
+    %the identity, hence, our base frame is assumed to be the cannonical frame)
     T = eye(4,4);
     
 
@@ -57,7 +60,12 @@ function [T,J] = fk(DH,q)
     
     pe = pe(1:3,:);
     
+    % For each joint i, then do:
     for i=(1:N),
+        
+        %position i in P or Z is corresponds to origin pi-1 and z axis i-1,
+        %if i==1, then, i corresponds to the origin of the base frame, and
+        %corresponding z axis of the base frame
         p = P{i}(1:3,:);
         z = Z{i}(1:3,:);
     
@@ -67,11 +75,11 @@ function [T,J] = fk(DH,q)
         joi = [];
         %% if joint_type == 1 then it's prismatic, else it's revolute
         if joint_type 
-            jpi = z;
+            jpi = z; % zi-1
             joi = zeros(3,1);
         else
-            jpi = cross(z,pe - p);
-            joi = z;
+            jpi = cross(z,pe - p); % zi-1 x (pe - pi-1)
+            joi = z; %zi-1
         end
         
         J(:,i) = [ jpi ; joi ];
