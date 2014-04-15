@@ -28,7 +28,13 @@ curr_wmd = zeros(3,1);
 %% Forward phase
 z0 = [0;0;1];
 for i=(1:N),
+    
+    %% Vector from origin of frame i to the center of mass of link i
+    %% (Negative quantity, Siciliano's book)
     rici = [-L/2;0;0];
+    
+    %% Vector from origin of frame i-1 (frame of link i) to origin of
+    %% frame j (aka i, meaning that j = i+1 = i) - Siciliano's book
     rij = [L;0;0];
     
     % R from frame i to frame i-1 (1->0,2->1,...). I`m going to use it`s inverse 
