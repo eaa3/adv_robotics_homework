@@ -1,4 +1,4 @@
-function tau = NEBackwards(N,m,I,kri,q,qd,qdd,fv,fc,W,Wd,Wmd,Pcdd,Rij,Rici,Rot)
+    function tau = NEBackwards(N,m,I,kri,q,qd,qdd,fv,fc,W,Wd,Wmd,Pcdd,Rij,Rici,Rot)
 
 %% backwards
 z0 = [0;0;1];
@@ -23,6 +23,10 @@ constructS = @(v) [0 -v(3) v(2);
               
 qd(N+1) = 0;
 qdd(N+1) = 0;
+
+%% Motor inertia
+Im = 0.005;
+mm = 0.5;
 
 for i = (N:-1:1),
     
@@ -52,21 +56,22 @@ for i = (N:-1:1),
     %% Link inertia tensor. Steiner Theorem, equation 7.60 (Siciliano)
     I_tensor = eye(3,3)*I + m*((S')*S);
     
+    % The rotor is localised in the COM
+    S = constructS(rici);
+    Im_tensor = eye(3,3)*Im; %+ mm*((S')*S);
     
-    
-    %Motor inertia
-    Im = I;
+
     
     
     %% Equation 7.113 (Siciliano). Depending on the book edition there might be a typo error with a double cross(w,I_tensor*w) 
     curr_u = cross(-curr_f,rij+rici) + R*prev_u + cross(R*prev_f,rici) ...
              + I_tensor*wd + cross(w,I_tensor*w) ...
-             + kri*qdd(i+1)*Im*zm + kri*qd(i+1)*Im*cross(w,zm);  % The final result doesn't agree with Siciliano's derivation for a 2-link robot arm if you don't comment this line 
+             + kri*qdd(i+1)*(Im_tensor*zm) + kri*qd(i+1)*(cross(Im_tensor*w,zm));  % The final result doesn't agree with Siciliano's derivation for a 2-link robot arm if you don't comment this line 
              %There seems to be some kind of typo error in the line above.
              %I didn't have time to prove it, though.
     
     %% Equation 7.114 for a revolute joint (Siciliano)
-    tau(i) = curr_u'*(Rt*z0) + kri*Im*wmd'*zm + fv*qd(i) + fc*sign(qd(i));
+    tau(i) = curr_u'*(Rt*z0) + kri*(Im_tensor*wmd)'*zm + fv*qd(i) + fc*sign(qd(i));
     
     prev_f = curr_f;
     prev_u = curr_u;
