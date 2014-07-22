@@ -5,7 +5,7 @@ finish = 0;
 Nit = 1000;
 Error_threshold = 0.5;
 
-% Dimensions of DH table of parameters
+% Dimensions of the DH table of parameters
 size_dh = size(DH);
 
 % Damping factor
@@ -45,16 +45,18 @@ while(~finish),
     Jc = J'/(J*J' + (k^2)*IdenJ);
     
     p_e = T*[0 0 0 1]';
-    
+
     %For the planar case, the angular position of the end effector is just
     %the sum of the joint angles
-    theta = sum(q_tmp);
+    %theta = sum(q_tmp); --Not using this anymore
     
-    %% Limiting the robot to the place
-    p_e = [p_e(1:3,:); 0; 0; theta];
+    %% Roboto works on 3D space (not simplyfied for the planar case now)
+    q_curr = tr2rpy(T);
+    p_e = [p_e(1:3,:); q_curr'];
     
     e = p_des - p_e;
     
+    %% Null-space projection matrix
     P = (IdenP - Jc*J);
     
     

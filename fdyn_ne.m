@@ -8,22 +8,22 @@ end
 
 tau_act = zeros(N,1);
 %all zeros
-q0 = [zeros(N,1)];
+q0 = [pi/2; zeros(N-1,1)];
 qd0 = zeros(N,1);
 qdd0 = zeros(N,1);
-fv = 0.05;
-fc = 0.5;
+fv = 0.9;
+fc = 0.9;
 I = 10;
-L = 2;
-m = 5;
+L = 1;
+m = 50;
 g = [0 -9.81 0]';
 
 %% DeltaTime for Euler integration
 % 0.5
-deltaTime = 0.4;
+deltaTime = 0.25;
 
 
-time = 0:deltaTime:200;
+time = 0:deltaTime:100;
 q = q0;
 qd = qd0;
 qdd = qdd0;
@@ -49,15 +49,16 @@ for t=time,
     qdd = Binv*(tau_act - tau);
     
     qd = qd + qdd*deltaTime;
-    q = q + qd*deltaTime;
+    q = q + qd*deltaTime + qdd*(deltaTime^2)*0.5;
     
     q_out = [q_out; q'];
     
 end
 
 
-figure;
+figure(1);
 
+clf;
 DH = [];
 for i=(1:N),
     subplot(N,1,i);
@@ -71,7 +72,8 @@ for i=(1:N),
 end
 
 robota = constructRobot(DH);
-figure;
+figure(2);
+clf;
 plot(robota,q_out);
 
 

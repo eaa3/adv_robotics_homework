@@ -1,4 +1,4 @@
-    function tau = NEBackwards(N,m,I,kri,q,qd,qdd,fv,fc,W,Wd,Wmd,Pcdd,Rij,Rici,Rot)
+    function tau = NEBackwards(N,m,I,mm,Im,kri,q,qd,qdd,fv,fc,W,Wd,Wmd,Pcdd,Rij,Rici,Rot)
 
 %% backwards
 z0 = [0;0;1];
@@ -24,9 +24,7 @@ constructS = @(v) [0 -v(3) v(2);
 qd(N+1) = 0;
 qdd(N+1) = 0;
 
-%% Motor inertia
-Im = 0.005;
-mm = 0.5;
+
 
 for i = (N:-1:1),
     
@@ -54,10 +52,11 @@ for i = (N:-1:1),
     S = constructS(rici);
     
     %% Link inertia tensor. Steiner Theorem, equation 7.60 (Siciliano)
-    I_tensor = eye(3,3)*I + m*((S')*S);
+    I_tensor = eye(3,3)*I;% + m*((S')*S);
     
     % The rotor is localised in the COM
     S = constructS(rici);
+    % I'm assuming the motor is positioned at the origin.
     Im_tensor = eye(3,3)*Im; %+ mm*((S')*S);
     
 

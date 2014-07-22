@@ -18,6 +18,7 @@ s_dh = size(DH);
 links = Link.empty;
 
 for i=(1:s_dh(1)),
+
     
     if( DH(i,5) == 0 )
         links(i) = Revolute('a',DH(i,1),'alpha',DH(i,2),'d',DH(i,3));
