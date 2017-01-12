@@ -11,7 +11,7 @@ if nargin < 1
 end
 
 
-%q_new = ik(DH,q,p_dest,q_dest,Mq);
+q_new = ik(DH,q,p_dest,q_dest,Mq);
 
 r = constructRobot(DH);
 
