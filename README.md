@@ -36,6 +36,8 @@ Tests ik by finding corresponding joint angles to take the robot to a given end-
 test_ik
 ```
 
+![Inverse Kinematics](https://github.com/eaa3/adv_robotics_homework/raw/master/gifs/ik_test.gif)
+
 ### Testing forward dynamics with the Newton-Euler algorithm
 
 1. Simulate a pendulum
@@ -44,17 +46,23 @@ test_ik
 simulate_pendulum
 ```
 
-1. Simulate a 2-linked arm under the effect of gravity
+![Forward Dynamics Pendulum](https://github.com/eaa3/adv_robotics_homework/raw/master/gifs/pendulum.gif)
+
+1. Simulate a 3-link arm under the effect of gravity
 
 ```
-fdyn_ne(2)
+fdyn_ne(3)
 ```
 
-1. Simulate a N-linked arm under the effect of gravity
+![3-link arm](https://github.com/eaa3/adv_robotics_homework/raw/master/gifs/3-link-arm.gif)
+
+1. Simulate a N-link arm under the effect of gravity
 
 ```
 fdyn_ne(N)
 ```
+
+
 
 
 
