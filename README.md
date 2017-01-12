@@ -4,7 +4,7 @@ Advanced robotics homework solutions in matlab (2014).
 
 ## Solutions include 
 
-* Forward kinematics, inverse kinematics, forward dynamics (via Newton-Euler).
+* Forward kinematics, inverse kinematics, forward dynamics (with the Newton-Euler algorithm).
 
 Naming conventions follow Siciliano's book (http://www.springer.com/us/book/9783540382195).
 
@@ -12,7 +12,7 @@ Naming conventions follow Siciliano's book (http://www.springer.com/us/book/9783
 
 * Peter Corke's Robotics Toolbox
 
-To run the solutions setup the Peter Corke's Robotics Toolbox following the instructions in http://petercorke.com/wordpress/toolboxes/robotics-toolbox/.
+To run the solutions setup Peter Corke's Robotics Toolbox following the instructions in http://petercorke.com/wordpress/toolboxes/robotics-toolbox/.
 
 
 ## Running the code
